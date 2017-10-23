@@ -8,7 +8,7 @@ import yaml
 def printNextArrivals(station_id, line, dest):
     with open("config.yml", 'r') as ymlfile:
         cfg = yaml.load(ymlfile)
-        
+
     api_key =  cfg['api']['key']
     # Red, Blue, G, Brn, P, Y Pnk, O
     lines = getLines()
@@ -47,12 +47,14 @@ def printNextArrivals(station_id, line, dest):
 
 
 def getStationId(name, line):
+    newLines = dict(zip(getLines().values(), getLines().keys()))
+    stationCode = newLines[line].lower()
     stations = requests.get(
         'https://data.cityofchicago.org/resource/8mj8-j3c4.json').json()
     resp = ''
     for s in stations:
         # station_descriptive_name, station_name, stop_id, stop_name
-        l, name, sID = s[line], s['stop_name'], s["stop_id"]
+        l, name, sID = s[stationCode], s['stop_name'], s["stop_id"]
         # import pdb; pdb.set_trace()
         if l == True:
             resp += "{} {}{}".format(sID, name, '\n')
@@ -89,5 +91,5 @@ def getArrivals(api_key, station_id):
 
 
 if __name__ == "__main__":
-    # getStationId('18th', 'blue')
-    print printNextArrivals('40590', 'Blue', 'O;Hare')
+    getStationId('18th', 'Pink')
+    # print printNextArrivals('40590', 'Brown', 'Belmont')
