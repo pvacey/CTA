@@ -3,17 +3,17 @@ import requests
 import json
 from datetime import datetime
 import ConfigParser
-
+import yaml
 
 def printNextArrivals(station_id, line, dest):
-    # 4f2b8b5964d64fa382bda81d5764cd5e
-    api_key = '4f2b8b5964d64fa382bda81d5764cd5e'
+    with open("config.yml", 'r') as ymlfile:
+        cfg = yaml.load(ymlfile)
+        
+    api_key =  cfg['api']['key']
     # Red, Blue, G, Brn, P, Y Pnk, O
-    lines = {'Red': 'Red', 'Blue': 'Blue', 'G': 'Green', 'Brn': 'Brown',
-             'P': 'Purple', 'Y': 'Yellow', 'Pnk': 'Pink', 'O': 'Orange'}
+    lines = getLines()
     try:
-        resp = requests.get(
-            'http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key={}&mapid={}&max=20&outputType=JSON'.format(api_key, station_id)).json()
+        resp = getArrivals(api_key, station_id)
     except requests.exceptions.RequestException as e:  # This is the correct syntax
         print e
         sys.exit(1)
@@ -59,6 +59,16 @@ def getStationId(name, line):
             # print s['stop_name']
     print resp
 
+
+def getLines():
+    return {'Red': 'Red', 'Blue': 'Blue', 'G': 'Green', 'Brn': 'Brown',
+            'P': 'Purple', 'Y': 'Yellow', 'Pnk': 'Pink', 'O': 'Orange'}
+
+
+def getArrivals(api_key, station_id):
+    return requests.get(
+        'http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key={}&mapid={}&max=20&outputType=JSON'.format(api_key, station_id)).json()
+
 # Station IDs http://www.transitchicago.com/developers/ttdocs/default.aspx#_Toc296199909
 # 40090 - Damen Brownline
 # 40160 - LaSalle/Van Buren
@@ -79,5 +89,5 @@ def getStationId(name, line):
 
 
 if __name__ == "__main__":
-    getStationId('18th', 'blue')
-    # print printNextArrivals('40590', 'Blue', 'O;Hare')
+    # getStationId('18th', 'blue')
+    print printNextArrivals('40590', 'Blue', 'O;Hare')
