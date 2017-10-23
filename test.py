@@ -22,5 +22,8 @@ class TestCTAMethods(unittest.TestCase):
     def test_yellowLine(self):
         self.assertEqual(self.lines['Y'], 'Yellow')
 
+    def test_blueLine(self):
+        self.assertEqual(self.lines['Blue'], 'Blue')
+
 if __name__ == '__main__':
     unittest.main()
