@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # CTA
 Simple script to display CTA Train arrival times.
 
@@ -22,3 +23,6 @@ This assumes you will be using `virtualenv` to create a local python environment
 3. supply your own API key in `cta.py`
 4. `./gunicorn.sh debug` to start the webui on port 8002 or `python -c "import cta; print cta.my_stops()"` for cli output
 
+=======
+# CTA Train Tracker [![Build Status](https://travis-ci.org/dancigrang/CTA.svg?branch=master)](https://travis-ci.org/dancigrang/CTA)
+>>>>>>> 0626747b47f97573be267c0a0d0cd170a86640f4
