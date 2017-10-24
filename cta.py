@@ -46,50 +46,42 @@ def printNextArrivals(station_id, line, dest):
     return response
 
 
-def getStationId(name, line):
-    newLines = dict(zip(getLines().values(), getLines().keys()))
-    stationCode = newLines[line].lower()
-    stations = requests.get(
-        'https://data.cityofchicago.org/resource/8mj8-j3c4.json').json()
-    resp = ''
+def get_lines():
+    return {'red': 'Red', 'Blue': 'Blue', 'G': 'Green', 'Brn': 'Brown',
+    'P': 'Purple', 'Y': 'Yellow', 'Pnk': 'Pink', 'O': 'Orange'}
+
+def get_raw_stations():
+    return requests.get('https://data.cityofchicago.org/resource/8mj8-j3c4.json').json()
+
+def get_stops(line):
+    '''Returns list of stops for a given line'''
+    tmp = get_lines()
+    new_lines = dict(zip(tmp.values(), tmp.keys()))
+    station_code = new_lines[line].lower()
+    stations = get_raw_stations()
+    resp = []
     for s in stations:
-        # station_descriptive_name, station_name, stop_id, stop_name
-        l, name, sID = s[stationCode], s['stop_name'], s["stop_id"]
-        # import pdb; pdb.set_trace()
-        if l == True:
-            resp += "{} {}{}".format(sID, name, '\n')
-            # print s['stop_name']
-    print resp
+        line_flag, stop_name, stop_id = s[station_code], s['stop_name'], s['stop_id']
+        if line_flag:
+            resp.append({'stop_id':stop_id, 'stop_name':stop_name,})
+    return resp
 
+def get_station(station_id):
+    '''to-do'''
+    return
 
-def getLines():
-    return {'Red': 'Red', 'Blue': 'Blue', 'G': 'Green', 'Brn': 'Brown',
-            'P': 'Purple', 'Y': 'Yellow', 'Pnk': 'Pink', 'O': 'Orange'}
-
-
-def getArrivals(api_key, station_id):
-    return requests.get(
-        'http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key={}&mapid={}&max=20&outputType=JSON'.format(api_key, station_id)).json()
-
-# Station IDs http://www.transitchicago.com/developers/ttdocs/default.aspx#_Toc296199909
-# 40090 - Damen Brownline
-# 40160 - LaSalle/Van Buren
-# 40460 - Mechandise Mart
-
-# def my_stops():
-#     resp = '-' * 31
-#     resp += '\n'
-#     resp += '| CTA Brownline' + ' ' * 15 + '|\n'
-#     resp += '-' * 31
-#     resp += '\n'
-#     resp += printNextArrivals('40090', 'Brn', 'Loop')
-#     resp += '\n\n'
-#     resp += printNextArrivals('40460', 'Brn', 'Kimball')
-#     resp += '\n'
-#     resp += '-' * 31
-#     return resp
+def get_arrivals_stop(api_key, station_id):
+    return requests.get('http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key={}&stpid={}&max=20&outputType=JSON'.format(api_key, station_id)).json()
 
 
 if __name__ == "__main__":
-    getStationId('18th', 'Pink')
-    # print printNextArrivals('40590', 'Brown', 'Belmont')
+    # setup - grab api key from config file
+    with open("config.yml", 'r') as ymlfile:
+        cfg = yaml.load(ymlfile)
+    api_key =  cfg['api']['key']
+
+    stops = get_stops('Pink')
+    for s in stops:
+        print s
+
+# Station IDs http://www.transitchicago.com/developers/ttdocs/default.aspx#_Toc296199909

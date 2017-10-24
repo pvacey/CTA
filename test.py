@@ -5,7 +5,7 @@ import cta
 
 class TestCTAMethods(unittest.TestCase):
     def setUp(self):
-        self.lines = cta.getLines()
+        self.lines = cta.get_lines()
 
     def test_linesExist(self):
         self.assertIsNotNone(self.lines)
