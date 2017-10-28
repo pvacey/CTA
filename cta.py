@@ -1,27 +1,30 @@
 #!venv/bin/python
-import requests
-import json
+"""An efficient way to check your train schedule."""
+# import json
 from datetime import datetime
-import ConfigParser
+import sys
 import yaml
+import requests
 
-def printNextArrivals(station_id, line, dest):
-    with open("config.yml", 'r') as ymlfile:
-        cfg = yaml.load(ymlfile)
 
-    api_key =  cfg['api']['key']
+def print_next_arrivals(station_id, line, dest):
+    """Prints the arrivals from the station provided"""
+    with open("config.yml", 'r') as yml:
+        cfg = yaml.load(yml)
+
+    api_key = cfg['api']['key']
     # Red, Blue, G, Brn, P, Y Pnk, O
-    lines = getLines()
+    lines = get_lines()
     try:
-        resp = getArrivals(api_key, station_id)
-    except requests.exceptions.RequestException as e:  # This is the correct syntax
-        print e
+        resp = get_arrivals_stop(api_key, station_id)
+    except requests.exceptions.RequestException as error:  # This is the correct syntax
+        print error
         sys.exit(1)
     arrivals = []
     trains = resp['ctatt']['eta']
-    for t in trains:
-        if t['rt'] == line and t['destNm'] == dest:
-            tmp = datetime.strptime(t['arrT'], "%Y-%m-%dT%H:%M:%S")
+    for train in trains:
+        if train['rt'] == line and train['destNm'] == dest:
+            tmp = datetime.strptime(train['arrT'], "%Y-%m-%dT%H:%M:%S")
             arrival = tmp.strftime("%I:%M:%S")
             elapsed = (tmp - datetime.now()).seconds
             minutes = elapsed / 60
@@ -30,7 +33,7 @@ def printNextArrivals(station_id, line, dest):
             arrivals.append({'time': arrival,
                              'minutes': minutes,
                              'seconds': seconds})
-            station_name = t['staNm']
+            station_name = train['staNm']
 
     response = '-' * 31
     response += '\n'
@@ -38,19 +41,21 @@ def printNextArrivals(station_id, line, dest):
     response += '-' * 31
     response += '\n'
     response += '{} ---> {}'.format(station_name, dest)
-    for a in arrivals:
+    for arrival in arrivals:
         response += '\n - {}m {}s from now ({})'.format(
-            a['minutes'], a['seconds'], a['time'])
+            arrival['minutes'], arrival['seconds'], arrival['time'])
     response += '\n'
     response += '-' * 31
     return response
 
 
 def get_lines():
+    """Returns CTA Format of thier Line for API"""
     return {'red': 'Red', 'Blue': 'Blue', 'G': 'Green', 'Brn': 'Brown',
-    'P': 'Purple', 'Y': 'Yellow', 'Pnk': 'Pink', 'O': 'Orange'}
+            'P': 'Purple', 'Y': 'Yellow', 'Pnk': 'Pink', 'O': 'Orange'}
 
 def get_raw_stations():
+    """Gets the raw station information"""
     return requests.get('https://data.cityofchicago.org/resource/8mj8-j3c4.json').json()
 
 def get_stops(line):
@@ -60,25 +65,28 @@ def get_stops(line):
     station_code = new_lines[line].lower()
     stations = get_raw_stations()
     resp = []
-    for s in stations:
-        line_flag, stop_name, stop_id = s[station_code], s['stop_name'], s['stop_id']
+    for station in stations:
+        line_flag, stop_name, stop_id = station[station_code], station['stop_name'], station['stop_id']
         if line_flag:
             resp.append({'stop_id':stop_id, 'stop_name':stop_name,})
     return resp
 
 def get_station(station_id):
     '''to-do'''
-    return
+    return station_id
 
 def get_arrivals_stop(api_key, station_id):
-    return requests.get('http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key={}&stpid={}&max=20&outputType=JSON'.format(api_key, station_id)).json()
+    """Pulls from API to get arrival stops"""
+    return requests.get(
+        'http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key={}&stpid={}&max=20&outputType=JSON'
+        .format(api_key, station_id)).json()
 
 
 if __name__ == "__main__":
     # setup - grab api key from config file
     with open("config.yml", 'r') as ymlfile:
         cfg = yaml.load(ymlfile)
-    api_key =  cfg['api']['key']
+    api_key = cfg['api']['key']
 
     stops = get_stops('Pink')
     for s in stops:
