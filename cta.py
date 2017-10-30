@@ -37,7 +37,7 @@ def print_next_arrivals(station_id, line, dest):
 
     response = '-' * 31
     response += '\n'
-    response += '| CTA {} Line'.format(lines[line]) + ' ' * 15 + '|\n'
+    response += '| CTA <span class="{}">{}</span> Line'.format(lines[line].lower(),lines[line]) + ' ' * 15 + '|\n'
     response += '-' * 31
     response += '\n'
     response += '{} ---> {}'.format(station_name, dest)
