@@ -2,5 +2,4 @@
 venv
 config.yml
 gunicorn.sh
-web.py
 .vscode

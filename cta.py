@@ -88,7 +88,7 @@ if __name__ == "__main__":
         cfg = yaml.load(ymlfile)
     api_key = cfg['api']['key']
 
-    stops = get_stops('Pink')
+    stops = get_stops('Blue')
     for s in stops:
         print s
 
