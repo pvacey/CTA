@@ -1,4 +1,4 @@
-# CTA Train Tracker [![Build Status](https://travis-ci.org/dancigrang/CTA.svg?branch=master)](https://travis-ci.org/pvacey/CTA)
+# CTA Train Tracker [![Build Status](https://travis-ci.org/dancigrang/CTA.svg?branch=master)](https://travis-ci.org/pvacey/CTA) [![BCH compliance](https://bettercodehub.com/edge/badge/pvacey/CTA?branch=master)](https://bettercodehub.com/)
 
 Simple script to display CTA Train arrival times.
 
