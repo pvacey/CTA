@@ -3,3 +3,4 @@ venv
 config.yml
 gunicorn.sh
 .vscode
+reddit.py
