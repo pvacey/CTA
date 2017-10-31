@@ -1,1 +1,1 @@
-We welcome contributions from everyone.
+We welcome contributions from everyone. :)
