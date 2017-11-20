@@ -93,19 +93,24 @@ def get_term_line_stations(line_name):
         resp += '\n + {}'.format(sta)
     resp += '\n'
     resp += '-' * 35
+    resp += '\n'
     return resp
 
 def get_term_arrivals(line_name, station_name):
 
     header = 'CTA {} LINE @ {}'.format(line_name.upper(), station_name.upper())
-    response = '-' * 35
-    response += '\n'
-    response += header + '\n'
-    response += '-' * 35
+    resp = '-' * 35
+    resp += '\n'
+    resp += header + '\n'
+    resp += '-' * 35
 
     # build a dictionary of arrival strings
-    raw_arrivals = get_raw_arrivals(line_name=line_name, station_name=station_name)
-
+    # if this raises an error for the station not existing, return the list
+    # of stations to the user instead
+    try:
+        raw_arrivals = get_raw_arrivals(line_name=line_name, station_name=station_name)
+    except ValueError:
+        return get_term_line_stations(line_name)
     json.dumps(raw_arrivals)
 
     stops = {}
@@ -123,13 +128,14 @@ def get_term_arrivals(line_name, station_name):
         stops[dest].append(tmp)
 
     for dest,arrivals in stops.items():
-        response += '\n{} ---> {}'.format(raw_arrivals[0]['staNm'], dest)
+        resp += '\n{} ---> {}'.format(raw_arrivals[0]['staNm'], dest)
         for a in arrivals:
-            response += a
+            resp += a
 
-    response += '\n'
-    response += '-' * 35
-    return response
+    resp += '\n'
+    resp += '-' * 35
+    resp += '\n'
+    return resp
 
 
 if __name__ == "__main__":
