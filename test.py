@@ -11,19 +11,19 @@ class TestCTAMethods(unittest.TestCase):
         self.assertIsNotNone(self.lines)
 
     def test_brownLine(self):
-        self.assertEqual(self.lines['Brn'], 'Brown')
+        self.assertEqual(self.lines['brown'], 'Brn')
 
     def test_pinkLine(self):
-        self.assertEqual(self.lines['Pnk'], 'Pink')
+        self.assertEqual(self.lines['pink'], 'Pnk')
 
     def test_greenLine(self):
-        self.assertEqual(self.lines['G'], 'Green')
+        self.assertEqual(self.lines['green'], 'G')
 
     def test_yellowLine(self):
-        self.assertEqual(self.lines['Y'], 'Yellow')
+        self.assertEqual(self.lines['yellow'], 'Y')
 
     def test_blueLine(self):
-        self.assertEqual(self.lines['Blue'], 'Blue')
+        self.assertEqual(self.lines['blue'], 'Blue')
 
 if __name__ == '__main__':
     unittest.main()
