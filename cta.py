@@ -84,6 +84,17 @@ def get_raw_arrivals(line_name,station_name):
 
     return arrivals
 
+def get_term_lines():
+    raw_lines = get_lines()
+    resp = '-' * 35
+    resp += '\n'
+    resp += 'CTA TRAIN LINES\n'
+    resp += '-' * 35
+    for line in raw_lines.keys():
+        resp += '\n + {}'.format(line)
+    resp += '\n'
+    return resp
+
 def get_term_line_stations(line_name):
     stations = get_raw_line_station_names(line_name)
     resp = '-' * 35
@@ -144,7 +155,8 @@ if __name__ == "__main__":
         print 'usage:\n  ./cta.py <line>'
         print '  ./cta.py <lime> <station_name>'
         print 'examples:\n  ./cta.py brown'
-        print '  ./cta.py blue lasalle'
+        print '  ./cta.py blue lasalle\n'
+        print get_term_lines()
         exit(1)
 
     if len(sys.argv) == 2:
