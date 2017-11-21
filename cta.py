@@ -98,7 +98,7 @@ def get_term_lines():
 def get_term_line_stations(line_name):
     stations = get_raw_line_station_names(line_name)
     resp = '-' * 35
-    resp += '\nCTA {} LINE STATION\n'.format(line_name.upper())
+    resp += '\nCTA {} LINE STATIONS\n'.format(line_name.upper())
     resp += '-' * 35
     for sta in stations:
         resp += '\n + {}'.format(sta)
