@@ -4,8 +4,7 @@ application = Flask(__name__)
 
 @application.route('/')
 def hello_world():
-    print request.headers.get('User-Agent').lower()
-    return "hello world"
+    return output(request, cta.get_term_lines())
 
 @application.route('/<line>')
 def get_line(line):
