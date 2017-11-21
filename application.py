@@ -21,7 +21,7 @@ def output(requests, data):
     if user_agent.startswith('curl'):
         return data
     else:
-        return '<pre> {} </pre>'.format(data)
+        return '<pre>{}</pre>'.format(data)
 
 if __name__ == '__main__':
     application.run(debug=True)
