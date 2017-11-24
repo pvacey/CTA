@@ -90,8 +90,10 @@ def get_term_lines():
     resp += '\n'
     resp += 'CTA TRAIN LINES\n'
     resp += '-' * 35
-    for line in raw_lines.keys():
-        resp += '\n + {}'.format(line)
+    lines = raw_lines.keys()
+    lines.sort()
+    for line in lines:
+        resp += '\n + {}'.format(line.title())
     resp += '\n'
     return resp
 
@@ -100,6 +102,7 @@ def get_term_line_stations(line_name):
     resp = '-' * 35
     resp += '\nCTA {} LINE STATIONS\n'.format(line_name.upper())
     resp += '-' * 35
+    stations.sort()
     for sta in stations:
         resp += '\n + {}'.format(sta)
     resp += '\n'
