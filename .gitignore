@@ -2,5 +2,10 @@
 venv
 config.yml
 gunicorn.sh
-web.py
 .vscode
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+=======

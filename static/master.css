@@ -1,0 +1,41 @@
+body {
+  background-color: black;
+  color: white;
+}
+
+.code {
+  white-space: pre;
+  font-family: monospace;
+}
+
+.blue {
+  color: blue;
+}
+
+.pink {
+  color: pink;
+}
+
+.red {
+  color: red;
+}
+
+.yellow {
+  color: yellow;
+}
+
+.orange {
+  color: orange;
+}
+
+.purple {
+  color: purple;
+}
+
+.green {
+  color: green;
+}
+
+.brown {
+  color: brown;
+}
